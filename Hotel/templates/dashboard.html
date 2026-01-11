@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | AI Smart Hotel</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="{{ url_for('static', filename='images/hotel.png') }}" alt="Hotel Logo">
+            <h3>AI Smart Hotel</h3>
+        </div>
+
+        <nav class="menu">
+            <a href="{{ url_for('dashboard') }}" class="active">
+                <i class="fas fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('demand_forecast') }}">
+                <i class="fas fa-chart-line"></i>
+                <span>Demand Forecasting</span>
+            </a>
+            <a href="{{ url_for('ai_pricing') }}">
+                <i class="fas fa-dollar-sign"></i>
+                <span>AI Pricing</span>
+            </a>
+            <a href="{{ url_for('analytic_report') }}">
+                <i class="fas fa-chart-pie"></i>
+                <span>Analytic Reports</span>
+            </a>
+            <a href="{{ url_for('room_management') }}">
+                <i class="fas fa-bed"></i>
+                <span>Room Management</span>
+            </a>
+            <a href="{{ url_for('ai_explanation') }}">
+                <i class="fas fa-brain"></i>
+                <span>AI Explanation</span>
+            </a>
+        </nav>
+
+        <div class="logout">
+            <a href="{{ url_for('login') }}">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+        <header class="topbar">
+            <button class="toggle-btn" id="toggleBtn"><i class="fas fa-bars"></i></button>
+            <h2>Dashboard</h2>
+        </header>
+
+        <section class="content">
+            <h3>Hotel Performance Overview</h3>
+
+            <!-- KPI Grid -->
+            <div class="kpi-grid">
+
+                <!-- Occupancy Comparison Card -->
+                <div class="kpi-card compare-advanced">
+                    <div class="kpi-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Occupancy Comparison (2025)</h4>
+                    </div>
+
+                    <div class="kpi-boxes">
+                        <div class="kpi-mini actual">
+                            <i class="fas fa-hotel"></i>
+                            <div>
+                                <span>Actual Occupancy</span>
+                                <p id="actualOccupancy">--%</p>
+                            </div>
+                        </div>
+
+                        <div class="kpi-mini ai">
+                            <i class="fas fa-brain"></i>
+                            <div>
+                                <span>AI Predicted Occupancy</span>
+                                <p id="aiOccupancy">--%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Room Distribution Card -->
+<div class="kpi-card room-distribution">
+    <div class="kpi-header">
+        <i class="fas fa-door-open"></i>
+        <h4>Total Rooms</h4>
+    </div>
+
+    <div class="room-chart-wrapper">
+        <canvas id="roomDonutChart"></canvas>
+        <div class="room-total">
+            <span>Total</span>
+            <h2>25</h2>
+        </div>
+    </div>
+
+    <div class="room-legend">
+        <div><span class="dot standard"></span> Standard (10)</div>
+        <div><span class="dot deluxe"></span> Deluxe (8)</div>
+        <div><span class="dot simple"></span> Simple (7)</div>
+    </div>
+
+    <!-- AI Revenue Comparison -->
+     <div class="ai-comparison" id="revenue-kpi">
+    <!-- Filled dynamically by JS -->
+    <div class="loading">Loading revenue KPI...</div>
+</div>
+
+
+</div>
+
+        
+        </section>
+        
+    </main>
+    
+    <div class="kpi-card price-comparison">
+
+    <div class="kpi-header">
+        <i class="fas fa-dollar-sign"></i>
+        <h4>Average Room Prices</h4>
+    </div>
+
+    <!-- ===== 2024 SECTION ===== -->
+    <div class="price-section">
+        <h5>2024 Average Prices</h5>
+
+        <div class="price-row">
+            <span>Standard</span>
+            <strong class="last">$<span id="lastStandard">--</span></strong>
+        </div>
+
+        <div class="price-row">
+            <span>Deluxe</span>
+            <strong class="last">$<span id="lastDeluxe">--</span></strong>
+        </div>
+
+        <div class="price-row">
+            <span>Simple</span>
+            <strong class="last">$<span id="lastSimple">--</span></strong>
+        </div>
+    </div>
+
+    <!-- ===== 2025 SECTION ===== -->
+    <div class="price-section">
+        <h5>2025 Average Prices</h5>
+
+        <div class="price-row three-col">
+            <span>Standard</span>
+            <strong>$<span id="actualStandard">--</span></strong>
+            <strong class="ai">$<span id="aiStandard">--</span></strong>
+        </div>
+
+        <div class="price-row three-col">
+            <span>Deluxe</span>
+            <strong>$<span id="actualDeluxe">--</span></strong>
+            <strong class="ai">$<span id="aiDeluxe">--</span></strong>
+        </div>
+
+        <div class="price-row three-col">
+            <span>Simple</span>
+            <strong>$<span id="actualSimple">--</span></strong>
+            <strong class="ai">$<span id="aiSimple">--</span></strong>
+        </div>
+
+        <div class="price-legend">
+            <span>⬤ Actual</span>
+            <span class="ai">⬤ AI Predicted</span>
+        </div>
+    </div>
+
+
+
+
+<!-- Custom JS -->
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+</body>
+</html>

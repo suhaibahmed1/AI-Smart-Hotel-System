@@ -1,0 +1,119 @@
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #f4f6f9;
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 260px;
+    background: #0f2027;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar-header {
+    text-align: center;
+    padding: 20px;
+}
+
+.sidebar-header img {
+    width: 60px;
+    margin-bottom: 10px;
+}
+
+.sidebar-header h3 {
+    font-size: 18px;
+}
+
+.sidebar.collapsed h3 {
+    display: none;
+}
+
+.menu {
+    flex: 1;
+    padding: 20px 0;
+}
+
+.menu a {
+    display: flex;
+    align-items: center;
+    padding: 14px 20px;
+    color: #ddd;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.menu a i {
+    width: 30px;
+    font-size: 18px;
+}
+
+.menu a span {
+    white-space: nowrap;
+}
+
+.menu a:hover {
+    background: #203a43;
+    color: #fff;
+}
+
+.sidebar.collapsed span {
+    display: none;
+}
+
+/* ===== LOGOUT ===== */
+.logout {
+    padding: 20px;
+}
+
+.logout a {
+    display: flex;
+    align-items: center;
+    color: #ff7675;
+    text-decoration: none;
+}
+
+/* ===== MAIN ===== */
+.main-content {
+    flex: 1;
+    background: #f4f6f9;
+}
+
+.topbar {
+    background: #fff;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.content {
+    padding: 30px;
+}

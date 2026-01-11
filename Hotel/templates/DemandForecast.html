@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demand Forecasting | AI Smart Hotel</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/DemandForecast.css') }}">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="{{ url_for('static', filename='images/hotel.png') }}" alt="Hotel Logo">
+            <h3>AI Smart Hotel</h3>
+        </div>
+
+        <nav class="menu">
+            <a href="{{ url_for('dashboard') }}"><i class="fas fa-house"></i><span>Dashboard</span></a>
+            <a href="{{ url_for('demand_forecast') }}" class="active"><i class="fas fa-chart-line"></i><span>Demand Forecasting</span></a>
+            <a href="{{ url_for('ai_pricing') }}"><i class="fas fa-dollar-sign"></i><span>AI Pricing</span></a>
+            <a href="{{ url_for('analytic_report') }}"><i class="fas fa-chart-pie"></i><span>Analytic Reports</span></a>
+            <a href="{{ url_for('room_management') }}"><i class="fas fa-bed"></i><span>Room Management</span></a>
+            <a href="{{ url_for('ai_explanation') }}"><i class="fas fa-brain"></i><span>AI Explanation</span></a>
+        </nav>
+
+        <div class="logout">
+            <a href="{{ url_for('login') }}"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <button class="toggle-btn" id="toggleBtn"><i class="fas fa-bars"></i></button>
+            <h2>Demand Forecasting</h2>
+        </header>
+
+        <section class="content">
+            <h3>Predicted Occupancy Rates</h3>
+
+            <!-- Month selection -->
+            <div class="search-bar">
+                <select id="monthSelect">
+                    <option value="">Select Month</option>
+                </select>
+                <button id="filterBtn">Show</button>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="forecast-container" id="forecastContainer"></div>
+
+            <!-- Donut Chart -->
+            <div id="occupancyChartContainer">
+                <canvas id="occupancyChart"></canvas>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script src="{{ url_for('static', filename='js/DemandForecast.js') }}"></script>
+
+</body>
+</html>

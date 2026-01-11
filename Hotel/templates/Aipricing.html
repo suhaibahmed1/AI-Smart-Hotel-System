@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Pricing | AI Smart Hotel</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Aipricing.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="{{ url_for('static', filename='images/hotel.png') }}" alt="Hotel Logo">
+            <h3>AI Smart Hotel</h3>
+        </div>
+
+        <nav class="menu">
+            <a href="{{ url_for('dashboard') }}"><i class="fas fa-house"></i><span>Dashboard</span></a>
+            <a href="{{ url_for('demand_forecast') }}"><i class="fas fa-chart-line"></i><span>Demand Forecasting</span></a>
+            <a href="{{ url_for('ai_pricing') }}" class="active"><i class="fas fa-dollar-sign"></i><span>AI Pricing</span></a>
+            <a href="{{ url_for('analytic_report') }}"><i class="fas fa-chart-pie"></i><span>Analytic Reports</span></a>
+            <a href="{{ url_for('room_management') }}"><i class="fas fa-bed"></i><span>Room Management</span></a>
+            <a href="{{ url_for('ai_explanation') }}"><i class="fas fa-brain"></i><span>AI Explanation</span></a>
+        </nav>
+
+        <div class="logout">
+            <a href="{{ url_for('login') }}"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <button class="toggle-btn" id="toggleBtn"><i class="fas fa-bars"></i></button>
+            <h2>AI Room Pricing</h2>
+        </header>
+
+        <div class="container">
+            <h1>AI Room Pricing Dashboard</h1>
+
+            <!-- ===== FILTERS ===== -->
+            <div class="filters">
+                <select id="monthFilter">
+                    <option value="">All Months</option>
+                </select>
+
+                <select id="typeFilter">
+                    <option value="">All Types</option>
+                    <option value="Simple">Simple</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Deluxe">Deluxe</option>
+                </select>
+
+                <button id="searchBtn">Search</button>
+                <button id="aiPredictBtn">AI Predict</button>
+            </div>
+
+            <!-- ===== TABLE ===== -->
+           <div class="table-container">
+    <table id="roomsTable">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Room Type</th>
+                <th>Price / Night</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+    </main>
+    
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="priceCards"></div>
+
+<script>
+fetch("/api/ai-prices")
+.then(res => res.json())
+.then(data => {
+  const container = document.getElementById("priceCards")
+  data.forEach(r => {
+    const diff = (((r.ai_price - r.actual_price) / r.actual_price) * 100).toFixed(1)
+    const badge = diff >= 0 ? "text-green-400" : "text-red-400"
+
+    container.innerHTML += `
+      <div class="bg-white/10 backdrop-blur-xl p-6 rounded-xl shadow-xl">
+        <h2 class="text-xl font-bold">${r.room_type}</h2>
+        <p class="text-sm opacity-70">Month ${r.month}</p>
+
+        <p class="mt-4">Actual: <b>PKR ${r.actual_price}</b></p>
+        <p>AI: <b>PKR ${r.ai_price}</b></p>
+
+        <p class="${badge} mt-2">${diff}% difference</p>
+
+        <button onclick="applyAI('${r.room_type}', ${r.month}, ${r.ai_price})"
+          class="mt-4 w-full bg-purple-600 hover:bg-purple-700 py-2 rounded">
+          Apply AI Price
+        </button>
+      </div>
+    `
+  })
+})
+
+function applyAI(room, month, price) {
+  if (!confirm("Apply AI price as actual?")) return
+
+  fetch("/api/override-price", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      room_type: room,
+      month: month,
+      ai_price: price
+    })
+  })
+  .then(() => location.reload())
+}
+</script>
+
+<script src="{{ url_for('static', filename='js/Aipricing.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+/* Container */
+.container {
+    padding: 20px;
+}
+
+/* Headings */
+.container h1 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filters select,
+.filters button {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+    outline: none;
+    color: #000; /* black text */
+}
+
+.filters select {
+    background: #fff;
+}
+
+.filters button {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filters button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,198,255,0.3);
+}
+
+/* Table Container for Scroll */
+.table-container {
+    max-height: 400px; /* Adjust as needed */
+    overflow-y: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Table */
+#roomsTable {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+#roomsTable thead {
+    background: #40739e;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+#roomsTable th,
+#roomsTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: #000;
+}
+
+#roomsTable tbody tr:hover {
+    background: #f1f2f6;
+}
+
+/* Price Cards */
+#priceCards {
+    margin-top: 30px;
+    display: grid;
+    gap: 20px;
+}
+
+#priceCards div {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+}
+
+#priceCards div:hover {
+    transform: translateY(-5px);
+}
+
+.text-green-400 { color: #16a34a; }
+.text-red-400 { color: #dc2626; }
+
+#priceCards button {
+    cursor: pointer;
+    background-color: #6b46c1;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 15px;
+    transition: 0.2s;
+}
+
+#priceCards button:hover {
+    background-color: #553c9a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .filters { flex-direction: column; }
+    .dashboard-container { flex-direction: column; }
+}

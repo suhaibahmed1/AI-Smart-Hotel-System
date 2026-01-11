@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics Report | AI Smart Hotel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/AnalyticReport.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="{{ url_for('static', filename='images/hotel.png') }}" alt="Hotel Logo">
+            <h3>AI Smart Hotel</h3>
+        </div>
+        <nav class="menu">
+            <a href="{{ url_for('dashboard') }}"><i class="fas fa-house"></i><span>Dashboard</span></a>
+            <a href="{{ url_for('demand_forecast') }}"><i class="fas fa-chart-line"></i><span>Demand Forecasting</span></a>
+            <a href="{{ url_for('ai_pricing') }}"><i class="fas fa-dollar-sign"></i><span>AI Pricing</span></a>
+            <a href="{{ url_for('analytic_report') }}" class="active"><i class="fas fa-chart-pie"></i><span>Analytic Reports</span></a>
+            <a href="{{ url_for('room_management') }}"><i class="fas fa-bed"></i><span>Room Management</span></a>
+            <a href="{{ url_for('ai_explanation') }}"><i class="fas fa-brain"></i><span>AI Explanation</span></a>
+        </nav>
+        <div class="logout">
+            <a href="{{ url_for('login') }}"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+        </div>
+    </aside>
+
+     <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+            <div class="container">
+                <h1>Monthly Revenue & Profit Comparison (2025)</h1>
+                <canvas id="revenueChart"></canvas>
+            </div>
+
+    </main>
+    
+</div>
+
+<script>
+async function loadRevenueData() {
+    try {
+        const response = await fetch("/api/monthly-profit-revenue-comparison-2025");
+
+        if (!response.ok) {
+            console.error("API Error:", response.status);
+            return;
+        }
+
+        const data = await response.json();
+        console.log("Loaded Data:", data);
+
+        const labels = data.map(d => d.Month);
+
+        const actualRevenue = data.map(d => d.Revenue_Actual);
+        const predictedRevenue = data.map(d => d.Revenue_Predicted);
+
+        const actualProfit = data.map(d => d.Profit_Actual);
+        const predictedProfit = data.map(d => d.Profit_Predicted);
+
+        const ctx = document.getElementById("revenueChart").getContext("2d");
+
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Actual Revenue",
+                        data: actualRevenue,
+                        borderColor: "#3498db",
+                        tension: 0.3
+                    },
+                    {
+                        label: "AI Predicted Revenue",
+                        data: predictedRevenue,
+                        borderColor: "#2ecc71",
+                        tension: 0.3
+                    },
+                    {
+                        label: "Actual Profit",
+                        data: actualProfit,
+                        borderColor: "#f39c12",
+                        tension: 0.3
+                    },
+                    {
+                        label: "AI Predicted Profit",
+                        data: predictedProfit,
+                        borderColor: "#e74c3c",
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: "top"
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: "Amount ($)"
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Month"
+                        }
+                    }
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error("JS Error:", error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", loadRevenueData);
+</script>
+
+
+</body>
+</html>
